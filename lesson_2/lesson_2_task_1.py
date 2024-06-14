@@ -5,5 +5,5 @@ print(length)
 length= ist[0]
 print (length)
 
-length= ist[5]
+length= ist[-1]
 print (length)
