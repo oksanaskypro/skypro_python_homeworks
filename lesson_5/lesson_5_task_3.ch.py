@@ -1,7 +1,7 @@
 from selenium import webdriver
 from time import sleep
 
-driver = webdriver.Chrome
+driver = webdriver.Chrome()
 driver.get ("http://uitestingplayground.com/classattr")
 
 for i in range(3):
