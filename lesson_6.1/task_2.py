@@ -5,7 +5,7 @@ from configuration import *
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
-def task_calculator_form (chrome_browser):
+def test_calculator_form (chrome_browser):
     chrome_browser.get(URL_2)
     delay_input= chrome_browser.find_element(By.ID, "delay")
     delay_input.clear()
@@ -17,6 +17,6 @@ def task_calculator_form (chrome_browser):
     chrome_browser.find_element(By.XPATH, "//span[text() = '=']"). click()
     
     result = WebDriverWait (chrome_browser, 46).until(EC.text_to_be_present_in_element((By.CLASS_NAME, "screen"), "15"))
-    result_text= chrome_browser.find_element(By.CLASS_NAME, "screen").text()
+    result_text= chrome_browser.find_element(By.CLASS_NAME, "screen").text
 
     assert result_text == "15"
