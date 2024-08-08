@@ -6,7 +6,7 @@ class DataFild:
 
     def find_fields (self):
         self.class_first_name = (By.ID, "first-name")
-        self.class_last_name = (By.ID, "Last-name")
+        self.class_last_name = (By.ID, "last-name")
         self.class_address = (By.ID, "address")
         self.class_email = (By.ID, "e-mail")
         self.class_phone = (By.ID, "phone")
@@ -26,7 +26,7 @@ class DataFild:
         return self.browser.find_element(*self.class_address).get_attribute("class")
     
     def get_class_email(self):
-        return self.browser.find_element(*self.class_email).det_attribute("class") 
+        return self.browser.find_element(*self.class_email).get_attribute("class") 
 
     def get_class_phone(self):
         return self.browser.find_element(*self.class_phone).get_attribute("class") 
