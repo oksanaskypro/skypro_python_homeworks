@@ -3,6 +3,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from lesson_7.constants import Test_form_URL
 from lesson_7.Data_types.data import *
+from selenium.webdriver.common.keys import Keys
 
 class MainPage:
     def __init__(self, browser):
@@ -34,8 +35,12 @@ class MainPage:
         self.browser.find_element(*self._job_position).send_keys(job_position)
         self.browser.find_element(*self._company).send_keys(company)
 
-    def click_submit_button (self):
-        WebDriverWait(self.browser, 40, 0.1).until(EC.element_to_be_clickable(self._button)).click()
-
-
+    def click_submit_button(self):
+        while True:
+            self.browser.find_element(By.TAG_NAME, "body").send_keys(Keys.PAGE_DOWN)
+            try:
+                WebDriverWait(self.browser, 40, 0.1).until(EC.element_to_be_clickable(self._button)).click()
+                break
+            except:
+                pass
 
