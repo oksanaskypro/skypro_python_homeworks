@@ -16,6 +16,7 @@ def test_data_types_form (chrome_browser):
     chrome_browser.find_element(By.NAME, "country").send_keys (country)
     chrome_browser.find_element(By.NAME, "job-position").send_keys(job_position)
     chrome_browser.find_element(By.NAME, "company").send_keys(company)
+    sleep (5)
     WebDriverWait(chrome_browser,  40, 0.2).until(
         EC. element_to_be_clickable ((By.TAG_NAME, "button"))).click()
     sleep (2)
