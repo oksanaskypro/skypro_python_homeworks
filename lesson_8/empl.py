@@ -19,9 +19,12 @@ class Company:
             "name": name,
             "description": description
         }
-        my_headers = {}
-        my_headers["x-client-token"] = self.get_token()
-        resp = requests.post(f"{self.url}/company", json=company, headers=my_headers)
+        BASE_HEADERS = {
+        "x-client-token": self.get_token()
+        }
+        resp = requests.post(f"{self.url}/company", json=company, headers=BASE_HEADERS)
+        if resp.status_code != 201:
+            raise Exception(f"Failed to create company: {resp.status_code}")
         return resp.json()
 
     def get_list_employee(self, id):
@@ -29,31 +32,38 @@ class Company:
             "company": id
         }
         resp = requests.get(f"{self.url}/employee", params=my_params)
+        if resp.status_code != 200:
+            raise Exception(f"Failed to list employee: {resp.status_code}") 
         return resp.json()
 
     def get_employee_by_id(self, id_employee):
         resp = requests.get(f"{self.url}/employee/{id_employee}")
+        if resp.status_code != 200:
+            raise Exception(f"Failed to employee by id: {resp.status_code}")
         return resp.json()
 
-    def add_new_employee(self, new_id, name, last_name):
+    def add_new_employee(self, new_id, name, last_name, email="test@test.ru", phone="89999999999", birthdate="2024-08-13T14:05:19.766Z"):
         employee = {
-            "id": 1,
-            "firstName": name,
-            "lastName": last_name,
-            "middleName": "-",
-            "companyId": new_id,
-            "email": "test@test.ru",
-            "url": "string",
-            "phone": "89999999999",
-            "birthdate": "2024-08-13T14:05:19.766Z",
-            "isActive": 'true'
+        "id": 1,
+        "firstName": name,
+        "lastName": last_name,
+        "middleName": "-",
+        "companyId": new_id,
+        "email": email,
+        "url": "string",
+        "phone": phone,
+        "birthdate": birthdate,
+        "isActive": 'true'
+    }
+
+        BASE_HEADERS = {
+        "x-client-token": self.get_token()
         }
-
-        my_headers = {}
-        my_headers["x-client-token"] = self.get_token()
-        resp = requests.post(f"{self.url}/employee", headers=my_headers, json=employee)
+        resp = requests.post(f"{self.url}/employee", headers=BASE_HEADERS, json=employee)
+        if resp.status_code != 201:
+            raise Exception(f"Failed to add new employee: {resp.status_code}") 
         return resp.json()
-
+    
     def update_employee_info(self, id_employee, last_name, email):
         user_info = {
             "lastName": last_name,
@@ -61,7 +71,10 @@ class Company:
             "isActive": True
         }
 
-        my_headers = {}
-        my_headers["x-client-token"] = self.get_token()
-        resp = requests.patch(f"{self.url}/employee/{id_employee}", headers=my_headers, json=user_info)
+        BASE_HEADERS = {
+        "x-client-token": self.get_token()
+        } 
+        resp = requests.patch(f"{self.url}/employee/{id_employee}", headers=BASE_HEADERS, json=user_info)
+        if resp.status_code != 200:
+            raise Exception(f"Failed to update employee info: {resp.status_code}")
         return resp.json()
