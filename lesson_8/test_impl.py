@@ -14,36 +14,66 @@ def test_get_list_of_employees(company):
     new_id = company["id"]
     employee_list = api.get_list_employee(new_id)
     assert len(employee_list) == 0
-    
 
+    
 def test_add_new_employee(company):
     new_id = company["id"]
     new_employee = api.add_new_employee(new_id, "Oksana1971", "B")
-    assert new_employee["id"] > 0
+    
+    # Проверка статус-кода ответа
+    assert new_employee["id"] > 0  # этот assert остается
+    # Добавление проверки статус-кода
+    assert new_employee.status_code == 201
 
     resp = api.get_list_employee(new_id)
     assert resp[0]["companyId"] == new_id
     assert resp[0]["firstName"] == "Oksana1971"
     assert resp[0]["isActive"] == True
     assert resp[0]["lastName"] == "B"
-
+    
 
 def test_get_employee_by_id(company):
     new_id = company["id"]
     new_employee = api.add_new_employee(new_id, "Oksana1971", "Be")
     id_employee = new_employee["id"]
+    assert id_employee.status_code == 201
+
+
     get_info = api.get_employee_by_id(id_employee)
     assert get_info["firstName"] == "Oksana1971"
     assert get_info["lastName"] == "Be"
-
-
+    
 def test_change_employee_info(company):
     new_id = company["id"]
     new_employee = api.add_new_employee(new_id, "Oksana1971", "Ber")
     id_employee = new_employee["id"]
-
+    assert id_employee.status_code ==201
+    
     update = api.update_employee_info(id_employee, "Ber2", "test2@mail.ru")
     assert update["id"] == id_employee
     assert update["email"] == "test2@mail.ru"
     assert update["isActive"] == True
 
+
+def test_employers_missing_id_and_token():
+    try:
+        api.update_employee_info()
+        assert "Company.update_employee_info()'id_employee','get_token' and 'email'" 
+    except TypeError as e:
+        assert str(
+            e) == "Company.update_employee_info() missing 3 required positional arguments : 'id_employee','get_token' and 'email'"  
+
+
+def test_add_employee_without_first_name(company):
+    new_id = company["id"]
+    with pytest.raises(Exception):
+        api.add_new_employee(new_id, "", "LastName")  # Пустое имя
+
+def test_add_employee_without_last_name(company):
+    new_id = company["id"]
+    with pytest.raises(Exception):
+        api.add_new_employee(new_id, "FirstName", "")  # Пустая фамилия
+
+def test_add_employee_without_company_id():
+    with pytest.raises(Exception):
+        api.add_new_employee(None, "FirstName", "LastName")  # Отсутствует ID компании          
