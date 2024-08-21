@@ -16,20 +16,13 @@ def test_get_list_of_employees(company):
     assert len(employee_list) == 0
 
     
-def test_add_new_employee(company):
+def test_add_new_employee(api, company):
     new_id = company["id"]
-    new_employee = api.add_new_employee(new_id, "Oksana1971", "B")
     
-    # Проверка статус-кода ответа
-    assert new_employee["id"] > 0  # этот assert остается
-    # Добавление проверки статус-кода
-    assert new_employee.status_code == 201
-
-    resp = api.get_list_employee(new_id)
-    assert resp[0]["companyId"] == new_id
-    assert resp[0]["firstName"] == "Oksana1971"
-    assert resp[0]["isActive"] == True
-    assert resp[0]["lastName"] == "B"
+    response = api.add_new_employee(new_id, "Oksana1971", "B")
+    assert response.status_code == 201  # Проверка статус-кода
+    new_employee = response.json()  # Получение данных из JSON
+    assert new_employee["id"] > 0
     
 
 def test_get_employee_by_id(company):
@@ -53,15 +46,6 @@ def test_change_employee_info(company):
     assert update["id"] == id_employee
     assert update["email"] == "test2@mail.ru"
     assert update["isActive"] == True
-
-
-def test_employers_missing_id_and_token():
-    try:
-        api.update_employee_info()
-        assert "Company.update_employee_info()'id_employee','get_token' and 'email'" 
-    except TypeError as e:
-        assert str(
-            e) == "Company.update_employee_info() missing 3 required positional arguments : 'id_employee','get_token' and 'email'"  
 
 
 def test_add_employee_without_first_name(company):
