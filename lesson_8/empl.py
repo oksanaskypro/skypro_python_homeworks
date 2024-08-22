@@ -27,19 +27,24 @@ class Company:
             raise Exception(f"Failed to create company: {resp.status_code}")
         return resp.json()
 
-    def get_list_employee(self, id):
-        my_params = {
-            "company": id
-        }
-        resp = requests.get(f"{self.url}/employee", params=my_params)
-        resp.raise_for_status()  # Проверяем, прошел ли запрос успешно
-        return resp  # Возвращаем объект ответа Response
+    def get_list_employee(self, company_id):
+        params = {"company": company_id}
+        resp = requests.get(
+            f"{self.url}/employee",
+            params=params,
+            headers=self.headers  # Добавляем заголовок для аутентификации
+        )
+        resp.raise_for_status()  # Проверяем успешность запроса
+        return resp
 
-    def get_employee_by_id(self, id_employee):
-        resp = requests.get(f"{self.url}/employee/{id_employee}")
-        resp.raise_for_status()  # Проверяем, прошел ли запрос успешно
-        return resp  # Возвращаем объект ответа Response
-
+    def get_employee_by_id(self, employee_id):
+        resp = requests.get(
+            f"{self.url}/employee/{employee_id}",
+            headers=self.headers  # Добавляем заголовок для аутентификации
+        )
+        resp.raise_for_status()  # Проверяем успешность запроса
+        return resp
+    
     def add_new_employee(self, new_id, name, last_name, email="test@test.ru", phone="89999999999", birthdate="2024-08-13T14:05:19.766Z"):
         employee = {
             "firstName": name,
