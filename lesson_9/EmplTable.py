@@ -23,9 +23,11 @@ class EmplTable:
             INSERT INTO employee (first_name, last_name, phone, company_id)
             VALUES (:first_name, :last_name, :phone, :company_id)
         """),
+
         "update": text("""
             UPDATE employee SET first_name = :first_name, last_name = :last_name,
-            middle_name = :middle_name, phone = :phone, email = :email, avatar_url = :avatar_url
+            middle_name = :middle_name, phone = :phone, email = :email, avatar_url = :avatar_url,
+            change_timestamp = now()
             WHERE id = :employee_id
         """),
         "delete": text("DELETE FROM employee WHERE id = :employee_id"),
