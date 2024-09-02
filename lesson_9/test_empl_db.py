@@ -20,7 +20,7 @@ def test_create_and_get_employee():
 
     len_before = len(db.get_employees())
 
-    db.insert_employee("Mike", "Sorreto", "+123456789", new_company_id)
+    new_employee_id = db.insert_employee("Mike", "Sorreto", "+123456789", new_company_id).inserted_primary_key[0]
 
     len_after = len(db.get_employees())
 
@@ -43,7 +43,7 @@ def test_update_employee():
     assert updated_employee["phone"] == "+987654321"
     assert updated_employee["email"] == "jane.doe@example.com"
     assert updated_employee["avatar_url"] == "http://example.com"
-
+    assert updated_employee["is_active"] == True  # Это поле не должно измениться
 def test_delete_all_employees():
     employees = db.get_employees()
 

@@ -38,7 +38,6 @@ class Company:
 
     def add_new_employee(self, new_id, name, last_name, email="test@test.ru", phone="89999999999", birthdate="2024-08-13T14:05:19.766Z"):
         employee = {
-            "id": 1,
             "firstName": name,
             "lastName": last_name,
             "middleName": "-",
